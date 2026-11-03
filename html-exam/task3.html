@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<title>Задача 3</title>
+<style>
+body { background: #eee; }
+.page { width: 1000px; margin: 0 auto; }
+
+header, section, footer {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid black;
+  background: white;
+}
+
+/* БЛОК 1 */
+header { background: #222; color: white; }
+.h-left, .h-right {
+  display: inline-block;
+  vertical-align: top;
+  width: 440px;
+  padding: 10px;
+  text-align: center;
+}
+.h-left hr { width: 50%; height: 4px; background: yellow; border: 0; }
+.h-left p { color: yellow; text-align: justify; }
+.h-right img { display: block; width: 120px; height: 60px; margin: 5px auto; }
+.trans { opacity: 0.4; }
+
+/* БЛОК 2: три кутии */
+.box {
+  display: inline-block;
+  vertical-align: top;
+  width: 270px;
+  height: 180px;
+  margin: 5px;
+  padding: 10px;
+  border: 2px solid blue;
+  background: lightcyan;
+}
+.box img { float: left; width: 70px; height: 70px; margin: 0 8px 4px 0; }
+.box h3 { text-align: center; }
+.box li:hover { color: green; }
+table { width: 100%; border-collapse: collapse; }
+td, th { border: 1px solid black; }
+
+/* БЛОК 3 */
+footer { text-align: center; }
+footer a {
+  display: inline-block;
+  width: 150px;
+  height: 35px;
+  margin: 0 5px;
+  background: gray;
+  border: 2px solid black;
+  color: white;
+  text-decoration: none;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <div class="h-left">
+    <h1>12 клас</h1>
+    <hr>
+    <p>Двустранно подравнен параграф в жълт цвят.</p>
+  </div><div class="h-right">
+    <img src="a.jpg" alt="1">
+    <img class="trans" src="a.jpg" alt="2">
+  </div>
+</header>
+
+<section>
+  <div class="box"><img src="a.jpg" alt="3"><p>Текст, който обтича картинката.</p></div><div class="box">
+    <h3>Моите интереси</h3>
+    <ul>
+      <li>Уеб дизайн</li>
+      <li>Програмиране</li>
+    </ul>
+  </div><div class="box">
+    <table>
+      <tr><th>№</th><th>Технология</th><th>Предназначение</th></tr>
+      <tr><td>1</td><td>HTML</td><td>Структура</td></tr>
+      <tr><td>2</td><td>CSS</td><td>Оформление</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <a href="#">Начало</a><a href="#">За нас</a><a href="#">Контакти</a>
+</footer>
+
+</div>
+</body>
+</html>
