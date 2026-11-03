@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<title>Задача 1</title>
+<style>
+body { background: #eee; }
+.page { width: 1000px; margin: 0 auto; }
+
+header, section, article {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid black;
+  background: white;
+}
+
+/* БЛОК 1: две половини */
+.left, .right {
+  display: inline-block;
+  vertical-align: top;
+  width: 440px;
+  height: 120px;
+  padding: 10px;
+  border: 1px solid gray;
+  text-align: center;
+}
+.left a { display: block; margin: 8px; }
+
+.menu {
+  display: inline-block;
+  width: 100px;
+  height: 35px;
+  margin: 35px 10px;
+  background: lightgray;
+  border: 2px solid black;
+  color: black;
+  text-decoration: none;
+}
+.m1:hover { background: orange; }
+
+/* БЛОК 2 */
+section { text-align: center; }
+section img { width: 250px; height: 170px; margin: 0 25px; }
+.round { border: 4px solid red; border-radius: 20px; }
+
+/* БЛОК 3 */
+.big { float: left; font-size: 200%; color: red; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <nav class="left">
+    <a href="#">Начало</a>
+    <a href="#">За нас</a>
+    <a href="#">Контакти</a>
+  </nav><nav class="right">
+    <a class="menu m1" href="#">Menu</a><a class="menu" href="#">Menu</a>
+  </nav>
+</header>
+
+<section>
+  <img src="img1.jpg" alt="1"><img class="round" src="img2.jpg" alt="2"><img src="img3.jpg" alt="3">
+</section>
+
+<article>
+  <p><span class="big">П</span>ървият параграф започва с голяма буква. Текстът продължава на няколко реда, за да се вижда ефектът.</p>
+  <p>Това е вторият параграф.</p>
+  <p>Това е третият параграф.</p>
+</article>
+
+</div>
+</body>
+</html>

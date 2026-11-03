@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<title>Задача 2</title>
+<style>
+body { background: #eee; }
+.page { width: 1000px; margin: 0 auto; }
+
+header, section, article {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid black;
+  background: white;
+}
+
+/* БЛОК 1 */
+header { text-align: center; }
+.menu {
+  display: inline-block;
+  width: 100px;
+  height: 35px;
+  margin: 10px;
+  background: lightgray;
+  border: 2px solid black;
+  color: black;
+  text-decoration: none;
+}
+.m1:hover { background: navy; color: white; text-decoration: underline; }
+
+/* БЛОК 2: картинки + линкове */
+.imgs, .links {
+  display: inline-block;
+  vertical-align: top;
+  width: 440px;
+  padding: 10px;
+  text-align: center;
+}
+.imgs img { width: 100px; height: 100px; margin: 0 20px; }
+.links a {
+  display: block;
+  margin: 10px;
+  color: red;
+  text-decoration: none;
+  text-shadow: 2px 2px 3px gray;
+}
+
+/* БЛОК 3: само третият параграф */
+.big { float: left; font-size: 200%; color: red; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <a class="menu m1" href="#">Menu</a><a class="menu" href="#">Menu</a>
+</header>
+
+<section>
+  <div class="imgs"><img src="a.jpg" alt="1"><img src="a.jpg" alt="2"><img src="a.jpg" alt="3"></div><div class="links">
+    <a href="#">Начало</a>
+    <a href="#">За нас</a>
+    <a href="#">Контакти</a>
+  </div>
+</section>
+
+<article>
+  <p>Първи параграф.</p>
+  <p>Втори параграф.</p>
+  <p><span class="big">Т</span>ова е третият параграф с голяма червена първа буква.</p>
+</article>
+
+</div>
+</body>
+</html>
