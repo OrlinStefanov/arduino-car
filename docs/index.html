@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skip</title>
+<style>
+  :root {
+    --bg1: #0b0b1a;
+    --bg2: #1b1040;
+    --a: #ff3d81;
+    --b: #7c4dff;
+    --c: #00e5ff;
+    --text: #fff;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    display: grid; place-items: center; overflow: hidden;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at 50% 40%, var(--bg2), var(--bg1) 70%);
+    user-select: none; -webkit-user-select: none;
+  }
+
+  /* drifting background blobs */
+  .blob {
+    position: fixed; border-radius: 50%; filter: blur(70px); opacity: .35;
+    animation: drift 14s ease-in-out infinite alternate; pointer-events: none;
+  }
+  .blob.one { width: 40vmax; height: 40vmax; background: var(--a); top: -10vmax; left: -10vmax; }
+  .blob.two { width: 45vmax; height: 45vmax; background: var(--b); bottom: -15vmax; right: -10vmax; animation-delay: -5s; }
+  .blob.three { width: 30vmax; height: 30vmax; background: var(--c); top: 40%; left: 55%; animation-delay: -9s; opacity: .22; }
+  @keyframes drift {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(8vmax, 6vmax) scale(1.25); }
+  }
+
+  main { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 4vmin; }
+
+  .count {
+    text-align: center; line-height: 1;
+    animation: fadeUp .8s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .count .num {
+    display: inline-block; font-size: clamp(3.5rem, 14vmin, 8rem); font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(90deg, var(--c), var(--a));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .count .num.bump { animation: bump .35s cubic-bezier(.3,1.6,.5,1); }
+  .count .label { margin-top: .6rem; font-size: .95rem; letter-spacing: .35em; text-transform: uppercase; opacity: .6; }
+  @keyframes bump {
+    0% { transform: scale(1); } 40% { transform: scale(1.35) rotate(-4deg); } 100% { transform: scale(1) rotate(0); }
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+  /* the button */
+  .wrap { position: relative; animation: fadeUp .8s .15s cubic-bezier(.2,.8,.2,1) both; }
+  .wrap::before, .wrap::after {
+    content: ""; position: absolute; inset: 0; border-radius: 999px;
+    border: 3px solid var(--b); opacity: 0; pointer-events: none;
+    animation: pulse 2.6s ease-out infinite;
+  }
+  .wrap::after { animation-delay: 1.3s; border-color: var(--a); }
+  @keyframes pulse { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.5, 1.8); opacity: 0; } }
+
+  button#skip {
+    position: relative; overflow: hidden; cursor: pointer; border: 0;
+    padding: 0 clamp(3rem, 14vmin, 7rem); height: clamp(7rem, 26vmin, 14rem);
+    border-radius: 999px;
+    font: 900 clamp(3rem, 15vmin, 8rem)/1 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase;
+    color: #fff; text-shadow: 0 4px 18px rgba(0,0,0,.35);
+    background: linear-gradient(120deg, var(--a), var(--b), var(--c), var(--a));
+    background-size: 300% 100%;
+    box-shadow: 0 .6rem 0 rgba(0,0,0,.35), 0 2rem 4rem rgba(124,77,255,.55);
+    animation: flow 6s linear infinite, float 3.2s ease-in-out infinite;
+    transition: transform .12s, box-shadow .12s;
+  }
+  @keyframes flow { to { background-position: 300% 0; } }
+  @keyframes float { 50% { transform: translateY(-10px); } }
+  button#skip::after { /* shine sweep */
+    content: ""; position: absolute; top: 0; bottom: 0; width: 35%; left: -50%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+    transform: skewX(-20deg); animation: shine 3.5s ease-in-out infinite;
+  }
+  @keyframes shine { 0%, 55% { left: -50%; } 100% { left: 130%; } }
+  button#skip:hover { box-shadow: 0 .6rem 0 rgba(0,0,0,.35), 0 2.5rem 6rem rgba(255,61,129,.65); filter: brightness(1.1); }
+  button#skip:active, button#skip.pressed {
+    animation: flow 6s linear infinite; transform: translateY(.5rem) scale(.96);
+    box-shadow: 0 .1rem 0 rgba(0,0,0,.35), 0 .8rem 2rem rgba(124,77,255,.5);
+  }
+  button#skip:focus-visible { outline: 4px solid #fff; outline-offset: 6px; }
+
+  .ripple {
+    position: absolute; border-radius: 50%; background: rgba(255,255,255,.55);
+    transform: scale(0); animation: ripple .7s ease-out forwards; pointer-events: none;
+  }
+  @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+  .particle {
+    position: fixed; z-index: 5; width: 10px; height: 10px; border-radius: 50%;
+    pointer-events: none; left: 0; top: 0; will-change: transform, opacity;
+  }
+
+  .toast {
+    position: fixed; top: 8vh; left: 50%; z-index: 10; font-weight: 800; font-size: clamp(1.2rem, 4vmin, 2rem);
+    padding: .5em 1.2em; border-radius: 999px; background: rgba(255,255,255,.14); backdrop-filter: blur(8px);
+    transform: translate(-50%, -30px); opacity: 0; pointer-events: none;
+  }
+  .toast.show { animation: toast 1.8s ease both; }
+  @keyframes toast { 15%, 80% { transform: translate(-50%, 0); opacity: 1; } 100% { transform: translate(-50%, -20px); opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="blob one"></div><div class="blob two"></div><div class="blob three"></div>
+
+  <main>
+    <div class="count" aria-live="polite">
+      <span class="num" id="num">0</span>
+      <div class="label">skips</div>
+    </div>
+    <div class="wrap"><button id="skip" type="button">Skip</button></div>
+  </main>
+  <div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const btn = document.getElementById('skip');
+  const num = document.getElementById('num');
+  const toast = document.getElementById('toast');
+  const KEY = 'skip-count';
+  const colors = ['#ff3d81', '#7c4dff', '#00e5ff', '#ffd54f', '#69f0ae'];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let count = 0;
+  try { count = parseInt(localStorage.getItem(KEY), 10) || 0; } catch (e) {}
+  num.textContent = count.toLocaleString();
+
+  const milestones = { 10: 'Warming up', 50: 'Skip master', 100: 'Century!', 500: 'Unstoppable', 1000: 'Legendary' };
+
+  function burst(x, y) {
+    if (reduce) return;
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.background = colors[i % colors.length];
+      document.body.appendChild(p);
+      const ang = Math.random() * Math.PI * 2;
+      const dist = 90 + Math.random() * 160;
+      const dx = Math.cos(ang) * dist, dy = Math.sin(ang) * dist - 40;
+      p.animate([
+        { transform: `translate(${x}px, ${y}px) scale(1)`, opacity: 1 },
+        { transform: `translate(${x + dx}px, ${y + dy + 80}px) scale(0)`, opacity: 0 }
+      ], { duration: 700 + Math.random() * 500, easing: 'cubic-bezier(.1,.7,.3,1)' }).onfinish = () => p.remove();
+    }
+  }
+
+  function ripple(e) {
+    const r = btn.getBoundingClientRect();
+    const size = Math.max(r.width, r.height) / 2;
+    const el = document.createElement('span');
+    el.className = 'ripple';
+    el.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
+    btn.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+
+  function skip(e) {
+    // keyboard clicks have clientX/Y = 0, so use the button centre instead
+    const r = btn.getBoundingClientRect();
+    const kb = e.detail === 0;
+    const cx = kb ? r.left + r.width / 2 : e.clientX;
+    const cy = kb ? r.top + r.height / 2 : e.clientY;
+
+    count++;
+    try { localStorage.setItem(KEY, count); } catch (err) {}
+    num.textContent = count.toLocaleString();
+    num.classList.remove('bump'); void num.offsetWidth; num.classList.add('bump');
+
+    ripple({ clientX: cx, clientY: cy });
+    burst(cx, cy);
+
+    if (milestones[count]) {
+      toast.textContent = milestones[count];
+      toast.classList.remove('show'); void toast.offsetWidth; toast.classList.add('show');
+    }
+  }
+
+  btn.addEventListener('click', skip);
+  // visual press for Space/Enter too
+  btn.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') btn.classList.add('pressed'); });
+  btn.addEventListener('keyup', () => btn.classList.remove('pressed'));
+  btn.addEventListener('blur', () => btn.classList.remove('pressed'));
+})();
+</script>
+</body>
+</html>
